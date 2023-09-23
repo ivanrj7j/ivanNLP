@@ -4,12 +4,15 @@ from ivanNLP.tokens import Token
 from numpy import array
 
 class WordTokenizer(Tokenizer):
+    """
+    Converts every word into a token, this uses .split() method to tokenize words
+    """
     def __init__(self) -> None:
         super().__init__()
 
     def fit(self, corpus: str | list[str]):
         def tokenize(c:str):
-            words = corpus.lower().split()
+            words = set(corpus.lower().split())
 
             tokens = [Token(x, array([])) for x in words]
 
