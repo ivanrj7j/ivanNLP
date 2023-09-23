@@ -1,6 +1,6 @@
 from typing import Union
 from ivanNLP.tokens import Token
-from numpy import ndarray
+from numpy import ndarray, stack, array_equal
 
 class Tokenizer:
     """
@@ -16,6 +16,16 @@ class Tokenizer:
 
         raise NotImplementedError("This method should be implemented by the child")
     
+    @property
+    def tokenMatrix(self) -> ndarray:
+        vectors = [x.vector for x in self.vocabulary]
+
+        return stack(vectors)
+    
+    @property
+    def keywords(self) -> list[str]:
+        return [x.token for x in self.vocabulary]
+    
     def getToken(self, token:str) -> Token:
         """
         Gives the token object for the given token
@@ -28,7 +38,7 @@ class Tokenizer:
         return results[0]
     
     def getTokenFromVector(self, vector:ndarray):
-        results = tuple(filter(lambda x: x.vector == vector, self.vocabulary))
+        results = tuple(filter(lambda x: array_equal(x.vector, vector), self.vocabulary))
 
         if len(results) == 0:
             raise ModuleNotFoundError("There are no token with the given vector")

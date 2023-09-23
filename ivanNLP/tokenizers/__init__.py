@@ -1,1 +1,2 @@
 from ivanNLP.tokenizers.Tokenizer import Tokenizer
+from ivanNLP.tokenizers.WordTokenizer import WordTokenizer
