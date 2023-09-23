@@ -5,26 +5,33 @@ from yake import KeywordExtractor
 from numpy import array, float32
 from ivanNLP.stopwords import english_stopwords
 
-
-class YAKETokenizer(Tokenizer):
-    """
-    Uses YAKE(Yet another keyword extractor) to extract tokens
-    """
-    def __init__(self) -> None:
+class WordYakeHybrid(Tokenizer):
+    def __init__(self, multiWordPercentage:float=0.2) -> None:
+        """
+        Initializes the object
+        
+        Keyword arguments:
+        multiWordPercentage -- The fraction of the total tokens to be multi word
+        Return: None
+        """
+        
         super().__init__()
+        self.multiWordPercentage = multiWordPercentage
 
     def fit(self, corpus: str | list[str]):
         def tokenize(c:str):
             c = Tokenizer.removePunctuations(c)
             
-            extractor = KeywordExtractor(top=float('inf'), stopwords=english_stopwords)
+            words = set(c.lower().split())
 
-            tokens = []
+            tokens = {Token(word, array([0])) for word in words}
+
+            extractor = KeywordExtractor(top=round(len(words)*self.multiWordPercentage), stopwords=english_stopwords)
 
             for keyword, score in extractor.extract_keywords(c):
-                tokens.append(Token(keyword, array([score], dtype=float32)))
+                tokens.add(Token(keyword, array([score], dtype=float32)))
 
-            self.vocabulary = tokens
+            self.vocabulary = list(tokens)
 
 
         if isinstance(corpus, str):

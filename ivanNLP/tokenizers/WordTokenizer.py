@@ -12,9 +12,11 @@ class WordTokenizer(Tokenizer):
 
     def fit(self, corpus: str | list[str]):
         def tokenize(c:str):
-            words = set(corpus.lower().split())
+            c = Tokenizer.removePunctuations(c)
 
-            tokens = [Token(x, array([])) for x in words]
+            words = set(c.lower().split())
+
+            tokens = [Token(x, array([0])) for x in words]
 
             self.vocabulary = tokens
 

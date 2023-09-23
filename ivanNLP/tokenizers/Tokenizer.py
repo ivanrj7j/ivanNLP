@@ -1,6 +1,7 @@
 from typing import Union
 from ivanNLP.tokens import Token
 from numpy import ndarray, stack, array_equal
+from string import punctuation
 
 class Tokenizer:
     """
@@ -25,6 +26,13 @@ class Tokenizer:
     @property
     def keywords(self) -> list[str]:
         return [x.token for x in self.vocabulary]
+    
+    @staticmethod
+    def removePunctuations(doc:str):
+        for char in punctuation:
+            doc = doc.replace(char, '')
+
+        return doc
     
     def getToken(self, token:str) -> Token:
         """
