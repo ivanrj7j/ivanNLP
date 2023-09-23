@@ -33,7 +33,7 @@ class Tokenizer:
         results = tuple(filter(lambda x: x.token == token, self.vocabulary))
 
         if len(results) == 0:
-            raise ModuleNotFoundError("There are no token with the given vector")
+            raise ModuleNotFoundError("There are no token object for given token")
         
         return results[0]
     
