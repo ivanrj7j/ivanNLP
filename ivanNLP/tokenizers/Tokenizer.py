@@ -20,8 +20,12 @@ class Tokenizer:
         """
         Gives the token object for the given token
         """
+        results = tuple(filter(lambda x: x.token == token, self.vocabulary))
+
+        if len(results) == 0:
+            raise ModuleNotFoundError("There are no token with the given vector")
         
-        raise NotImplementedError("This method should be implemented by the child")
+        return results[0]
     
     def getTokenFromVector(self, vector:ndarray):
         results = tuple(filter(lambda x: x.vector == vector, self.vocabulary))
